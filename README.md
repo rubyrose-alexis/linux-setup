@@ -161,6 +161,21 @@ Update all packages and clean up:
 sudo bash scripts/utils/update-system.sh
 ```
 
+### Test Installation
+Validate that all installed tools and configurations work correctly:
+
+```bash
+bash scripts/utils/test-installation.sh
+```
+
+This will check for:
+- Essential commands (curl, wget, git, etc.)
+- Development tools (gcc, python, node, go)
+- Container tools (docker)
+- Cloud tools (aws, gcloud, kubectl, etc.)
+- Configuration files and directories
+- PATH configuration
+
 ## 🐳 Docker Usage
 
 ### Building the Image
@@ -271,6 +286,9 @@ bash scripts/utils/system-info.sh
 
 # Update system
 sudo bash scripts/utils/update-system.sh
+
+# Test installation
+bash scripts/utils/test-installation.sh
 
 # Build Docker image
 docker build -t ubuntu-devenv .
