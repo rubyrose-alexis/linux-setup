@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  devenv:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ubuntu-devenv:latest
+    container_name: ubuntu-devenv
+    stdin_open: true
+    tty: true
+    volumes:
+      # Mount current directory to workspace
+      - ./:/workspace
+      # Mount Docker socket to use host Docker (optional)
+      # - /var/run/docker.sock:/var/run/docker.sock
+      # Mount AWS credentials (optional)
+      # - ~/.aws:/root/.aws:ro
+      # Mount SSH keys (optional)
+      # - ~/.ssh:/root/.ssh:ro
+      # Mount Git config (optional)
+      # - ~/.gitconfig:/root/.gitconfig:ro
+    environment:
+      - TZ=UTC
+    # Optional: Expose ports for development
+    # ports:
+    #   - "3000:3000"  # Node.js
+    #   - "8000:8000"  # Python
+    #   - "8080:8080"  # General web
+    networks:
+      - devnet
+
+networks:
+  devnet:
+    driver: bridge
