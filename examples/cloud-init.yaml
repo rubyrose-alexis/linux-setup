@@ -1,0 +1,82 @@
+#cloud-config
+# Example cloud-init configuration for automatically setting up a VM with linux-setup
+# 
+# Usage:
+#   - AWS EC2: Pass this as user-data when launching instance
+#   - GCP: Use as startup script
+#   - Azure: Use as custom data
+#   - DigitalOcean: Use as user data
+
+# Update package database on first boot
+package_update: true
+package_upgrade: true
+
+# Install required packages
+packages:
+  - git
+  - curl
+
+# Create directories
+runcmd:
+  # Clone the linux-setup repository
+  - git clone https://github.com/rubyrose-alexis/linux-setup.git /opt/linux-setup
+  
+  # Run the installation (choose one of the following options)
+  
+  # Option 1: Full installation (default)
+  - cd /opt/linux-setup && ./install.sh --full
+  
+  # Option 2: Minimal installation
+  # - cd /opt/linux-setup && ./install.sh --minimal
+  
+  # Option 3: Docker installation
+  # - cd /opt/linux-setup && ./install.sh --docker
+  
+  # Option 4: Development tools only
+  # - cd /opt/linux-setup && ./install.sh --dev
+  
+  # Optional: Install cloud tools
+  # - cd /opt/linux-setup && bash scripts/packages/cloud-tools.sh
+  
+  # Copy setup to user's home directory for future reference
+  - cp -r /opt/linux-setup /home/ubuntu/linux-setup
+  - chown -R ubuntu:ubuntu /home/ubuntu/linux-setup
+
+# Optional: Create users (uncomment and customize as needed)
+# users:
+#   - name: devuser
+#     groups: sudo, docker
+#     shell: /bin/bash
+#     sudo: ['ALL=(ALL) NOPASSWD:ALL']
+#     ssh_authorized_keys:
+#       - ssh-rsa AAAAB3Nza... your-public-key-here
+
+# Optional: Set timezone
+# timezone: UTC
+
+# Optional: Set hostname
+# hostname: my-dev-vm
+# fqdn: my-dev-vm.example.com
+
+# Write completion message
+write_files:
+  - path: /etc/motd
+    content: |
+      ===================================
+      Welcome to your configured VM!
+      
+      Linux Setup has been installed.
+      Location: /opt/linux-setup
+      
+      Quick commands:
+        - System info: bash /opt/linux-setup/scripts/utils/system-info.sh
+        - Update system: sudo bash /opt/linux-setup/scripts/utils/update-system.sh
+      
+      Documentation:
+        - README: /opt/linux-setup/README.md
+        - Quick Start: /opt/linux-setup/QUICKSTART.md
+        - Packages: /opt/linux-setup/PACKAGES.md
+      ===================================
+
+# Final message
+final_message: "Linux Setup installation completed! System ready after $UPTIME seconds"
