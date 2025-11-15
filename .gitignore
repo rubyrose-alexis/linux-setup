@@ -205,3 +205,12 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Linux Setup specific
+*.backup-*
+*.log
+/tmp/
+
+# User-specific configuration (users may want to customize these)
+# Uncomment if you don't want to commit user customizations
+# scripts/config/custom-*.sh
